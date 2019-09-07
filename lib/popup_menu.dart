@@ -40,8 +40,8 @@ typedef MenuClickCallback = Function(MenuItemProvider item);
 typedef PopupMenuStateChanged = Function(bool isShow);
 
 class PopupMenu {
-  static final double itemWidth = 72.0;
-  static final double itemHeight = 65.0;
+  final double itemWidth;
+  final double itemHeight;
   static final double arrowHeight = 10.0;
   OverlayEntry _entry;
   List<MenuItem> items;
@@ -71,8 +71,8 @@ class PopupMenu {
       BuildContext context,
       VoidCallback onDismiss,
       int maxColumn,
-      itemWidth: 72.0,
-      itemHeight: 65.0,
+      this.itemWidth: 72.0,
+      this.itemHeight: 65.0,
       Color backgroundColor,
       Color highlightColor,
       Color lineColor,
@@ -322,6 +322,8 @@ class PopupMenu {
       lineColor: _lineColor,
       backgroundColor: _backgroundColor,
       highlightColor: _highlightColor,
+      itemWidth: this.itemWidth,
+      itemHeight: this.itemHeight,
     );
   }
 
@@ -354,6 +356,8 @@ class _MenuItemWidget extends StatefulWidget {
   final Color lineColor;
   final Color backgroundColor;
   final Color highlightColor;
+  final double itemWidth;
+  final double itemHeight;
 
   final Function(MenuItemProvider item) clickCallback;
 
@@ -363,7 +367,9 @@ class _MenuItemWidget extends StatefulWidget {
       this.clickCallback,
       this.lineColor,
       this.backgroundColor,
-      this.highlightColor});
+      this.highlightColor,
+      this.itemHeight,
+      this.itemWidth});
 
   @override
   State<StatefulWidget> createState() {
@@ -403,8 +409,8 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
         }
       },
       child: Container(
-          width: PopupMenu.itemWidth,
-          height: PopupMenu.itemHeight,
+          width: widget.itemWidth,
+          height: widget.itemHeight,
           decoration: BoxDecoration(
               color: color,
               border: Border(
