@@ -40,9 +40,9 @@ typedef MenuClickCallback = Function(MenuItemProvider item);
 typedef PopupMenuStateChanged = Function(bool isShow);
 
 class PopupMenu {
-  static var itemWidth = 72.0;
-  static var itemHeight = 65.0;
-  static var arrowHeight = 10.0;
+  static final double itemWidth = 72.0;
+  static final double itemHeight = 65.0;
+  static final double arrowHeight = 10.0;
   OverlayEntry _entry;
   List<MenuItem> items;
   int _row; // row count
@@ -71,6 +71,8 @@ class PopupMenu {
       BuildContext context,
       VoidCallback onDismiss,
       int maxColumn,
+      double itemWidth: 72.0,
+      double itemHeight: 65.0,
       Color backgroundColor,
       Color highlightColor,
       Color lineColor,
