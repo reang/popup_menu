@@ -36,7 +36,7 @@ class MenuItem extends MenuItemProvider {
 
 enum MenuType { big, oneLine }
 
-typedef MenuClickCallback = Function(MenuItemProvider item);
+typedef MenuClickCallback = Function(MenuItemProvider item, int index);
 typedef PopupMenuStateChanged = Function(bool isShow);
 
 class PopupMenu {
@@ -247,11 +247,9 @@ class PopupMenu {
         items.sublist(row * _col, min(row * _col + _col, items.length));
     List<Widget> itemWidgets = [];
     int i = 0;
-    for (var item in subItems) {
-      itemWidgets.add(_createMenuItem(
-        item,
-        i < (_col - 1),
-      ));
+    for (int j = 0; j < subItems?.length ?? 0; j++) {
+      MenuItem item = subItems[j];
+      itemWidgets.add(_createMenuItem(item, i < (_col - 1), j));
       i++;
     }
 
@@ -314,9 +312,10 @@ class PopupMenu {
     return width / ratio;
   }
 
-  Widget _createMenuItem(MenuItem item, bool showLine) {
+  Widget _createMenuItem(MenuItem item, bool showLine, int index) {
     return _MenuItemWidget(
       item: item,
+      index: index,
       showLine: showLine,
       clickCallback: itemClicked,
       lineColor: _lineColor,
@@ -327,16 +326,16 @@ class PopupMenu {
     );
   }
 
-  void itemClicked(MenuItemProvider item) {
+  void itemClicked(MenuItemProvider item, int index) {
     if (onClickMenu != null) {
-      onClickMenu(item);
+      onClickMenu(item, index);
     }
 
     dismiss();
   }
 
   void dismiss() {
-    _entry.remove();
+    if (_entry != null) _entry.remove();
     _isShow = false;
     if (dismissCallback != null) {
       dismissCallback();
@@ -358,11 +357,13 @@ class _MenuItemWidget extends StatefulWidget {
   final Color highlightColor;
   final double itemWidth;
   final double itemHeight;
+  final int index;
 
-  final Function(MenuItemProvider item) clickCallback;
+  final Function(MenuItemProvider item, int index) clickCallback;
 
   _MenuItemWidget(
       {this.item,
+      this.index,
       this.showLine = false,
       this.clickCallback,
       this.lineColor,
@@ -405,7 +406,7 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
       },
       onTap: () {
         if (widget.clickCallback != null) {
-          widget.clickCallback(widget.item);
+          widget.clickCallback(widget.item, widget.index);
         }
       },
       child: Container(
