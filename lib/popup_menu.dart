@@ -434,7 +434,7 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
               child: Material(
                 color: Colors.transparent,
                 child: Text(
-                  widget.item.menuTitle,
+                  widget.item.menuTitle ?? '',
                   style: widget.item.menuTextStyle,
                 ),
               ),
