@@ -340,7 +340,11 @@ class PopupMenu {
   }
 
   void dismiss() {
-    _entry?.remove();
+    if (_entry != null) {
+      _entry.remove();
+      _entry = null;
+    }
+
     _isShow = false;
     
     if (dismissCallback != null) {
