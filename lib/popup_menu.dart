@@ -13,12 +13,14 @@ abstract class MenuItemProvider {
   Widget get menuImage;
 
   TextStyle get menuTextStyle;
+  
+  dynamic get menuUserInfo;
 }
 
 class MenuItem extends MenuItemProvider {
   Widget image; // 图标名称
   String title; // 菜单标题
-  var userInfo; // 额外的菜单荐信息
+  dynamic userInfo; // 额外的菜单荐信息
   TextStyle textStyle;
 
   MenuItem({this.title, this.image, this.userInfo, this.textStyle});
@@ -32,6 +34,9 @@ class MenuItem extends MenuItemProvider {
   @override
   TextStyle get menuTextStyle =>
       textStyle ?? TextStyle(color: Color(0xffc5c5c5), fontSize: 10.0);
+  
+  @override
+  dynamic get menuUserInfo => userInfo;
 }
 
 enum MenuType { big, oneLine }
@@ -335,11 +340,9 @@ class PopupMenu {
   }
 
   void dismiss() {
-    if (_entry != null) {
-      _entry.remove();
-      _entry = null;
-    }
+    _entry?.remove();
     _isShow = false;
+    
     if (dismissCallback != null) {
       dismissCallback();
     }
